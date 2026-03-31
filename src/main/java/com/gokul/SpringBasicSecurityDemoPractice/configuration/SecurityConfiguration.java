@@ -1,6 +1,7 @@
 package com.gokul.SpringBasicSecurityDemoPractice.configuration;
 
 import com.gokul.SpringBasicSecurityDemoPractice.filter.JWTAuthenticationFilter;
+import com.gokul.SpringBasicSecurityDemoPractice.model.Permission;
 import com.gokul.SpringBasicSecurityDemoPractice.userAuth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,33 +26,42 @@ public class SecurityConfiguration {
     JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain basicAuthenticationFilterChain(HttpSecurity httpSecurity){
+    public SecurityFilterChain basicAuthenticationFilterChain(HttpSecurity httpSecurity) {
         httpSecurity
-                .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(req-> req.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(req -> req.requestMatchers("/auth/**")
+                        .permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/health").hasRole("ADMIN")
+                        .requestMatchers("/api/read").hasAuthority(Permission.READ.name())
+                        .requestMatchers("/api/write").hasAuthority(Permission.WRITE.name())
+                        .requestMatchers("/api/update").hasAuthority(Permission.UPDATE.name())
+                        .requestMatchers("/api/delete").hasAuthority(Permission.DELETE.name())
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,PasswordEncoder passwordEncoder){
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider){
+    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return new ProviderManager(authenticationProvider);
     }
 }

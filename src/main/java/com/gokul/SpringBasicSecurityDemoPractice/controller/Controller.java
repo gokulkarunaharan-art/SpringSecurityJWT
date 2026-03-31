@@ -2,10 +2,7 @@ package com.gokul.SpringBasicSecurityDemoPractice.controller;
 
 
 import com.gokul.SpringBasicSecurityDemoPractice.model.AuthenticationRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -15,4 +12,26 @@ public class Controller {
     public String healthcheck(){
         return "Healthy";
     }
+
+    @GetMapping("/read")
+    public String readData(){
+        return "data read successful";
+    }
+
+    @PutMapping("/update")
+    public String updateData(){
+        return "updateSuccessful";
+    }
+
+    @PostMapping("/write")
+    public String writeData(){
+        return "writeSuccessful";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteData(){
+        return "deleteSuccessful";
+    }
+
+
 }

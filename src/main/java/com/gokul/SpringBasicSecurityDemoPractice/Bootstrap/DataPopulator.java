@@ -1,5 +1,6 @@
 package com.gokul.SpringBasicSecurityDemoPractice.Bootstrap;
 
+import com.gokul.SpringBasicSecurityDemoPractice.model.Role;
 import com.gokul.SpringBasicSecurityDemoPractice.model.User;
 import com.gokul.SpringBasicSecurityDemoPractice.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -13,11 +14,17 @@ public class DataPopulator {
     public CommandLineRunner populateUserDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder){
         return args -> {
             User user = User.builder()
-                    .name("gokul")
+                    .name("admin")
                     .password(passwordEncoder.encode("1234"))
-                    .role("admin")
+                    .role(Role.ADMIN)
+                    .build();
+            User user1 = User.builder()
+                    .name("user")
+                    .password(passwordEncoder.encode("1234"))
+                    .role(Role.USER)
                     .build();
             userRepository.save(user);
+            userRepository.save(user1);
         };
     }
 }
