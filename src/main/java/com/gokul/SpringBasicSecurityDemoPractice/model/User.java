@@ -34,7 +34,7 @@ public class User implements UserDetails {
         authorities.addAll(role.getPermissions().stream().map(permission -> {
             return new SimpleGrantedAuthority(permission.name());
         }).collect(Collectors.toSet()));
-        return List.of();
+        return authorities;
     }
 
     @Override

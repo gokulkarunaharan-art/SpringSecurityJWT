@@ -1,7 +1,6 @@
 package com.gokul.SpringBasicSecurityDemoPractice.controller;
 
-
-import com.gokul.SpringBasicSecurityDemoPractice.model.AuthenticationRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,29 +8,32 @@ import org.springframework.web.bind.annotation.*;
 public class Controller {
 
     @GetMapping("/health")
-    public String healthcheck(){
+    public String healthcheck() {
         return "Healthy";
     }
 
     @GetMapping("/read")
-    public String readData(){
+    @PreAuthorize("hasAuthority('READ')")
+    public String readData() {
         return "data read successful";
     }
 
     @PutMapping("/update")
-    public String updateData(){
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public String updateData() {
         return "updateSuccessful";
     }
 
     @PostMapping("/write")
-    public String writeData(){
+    @PreAuthorize("hasAuthority('WRITE')")
+    public String writeData() {
         return "writeSuccessful";
     }
 
     @DeleteMapping("/delete")
-    public String deleteData(){
+    @PreAuthorize("hasAuthority('DELETE')")
+    public String deleteData() {
         return "deleteSuccessful";
     }
-
 
 }

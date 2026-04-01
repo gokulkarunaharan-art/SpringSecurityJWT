@@ -23,8 +23,14 @@ public class DataPopulator {
                     .password(passwordEncoder.encode("1234"))
                     .role(Role.USER)
                     .build();
+            User user2 = User.builder()
+                    .name("guest")
+                    .password(passwordEncoder.encode("1234"))
+                    .role(Role.GUEST)
+                    .build();
             userRepository.save(user);
             userRepository.save(user1);
+            userRepository.save(user2);
         };
     }
 }

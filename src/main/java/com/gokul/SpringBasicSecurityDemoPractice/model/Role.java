@@ -4,7 +4,8 @@ import java.util.Set;
 
 public enum Role {
     ADMIN(Set.of(Permission.UPDATE, Permission.READ, Permission.WRITE, Permission.DELETE)),
-    USER(Set.of(Permission.READ));
+    USER(Set.of(Permission.READ,Permission.WRITE)),
+    GUEST(Set.of(Permission.READ));
 
     private Set<Permission> permissions;
 

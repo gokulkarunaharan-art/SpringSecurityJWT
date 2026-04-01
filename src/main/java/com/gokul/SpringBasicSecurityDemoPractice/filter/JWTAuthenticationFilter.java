@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,7 +22,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     JWTUtil jwtUtil;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -45,6 +46,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        filterChain.doFilter(request,response);
+        else{
+            filterChain.doFilter(request,response);
+        }
     }
 }
